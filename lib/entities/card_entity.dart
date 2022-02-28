@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class CardEntity {
 
   String word;
@@ -7,6 +5,5 @@ class CardEntity {
   int confidence;
 
   CardEntity(this.word, this.definition, [this.confidence = 0]);
-
 
 }
