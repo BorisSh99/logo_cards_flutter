@@ -30,6 +30,12 @@ class _HomePageState extends State<HomePage> {
     ]));
   }
 
+  void onChangedName(String newName) {
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,19 +45,22 @@ class _HomePageState extends State<HomePage> {
       body: ListView.builder(
         itemCount: cardListCollection.length,
         itemBuilder: (context, index) {
-          String listName = cardListCollection[index].name;
           return Card(
             child: Stack(
               children: [
                 ListTile(
                   title: Padding(
                     padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 13.0),
-                    child: Text(listName),
+                    child: Text(cardListCollection[index].name),
                   ),
                   subtitle: Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          setState(() {
+                            cardListCollection[index].name = 'test';
+                          });
+                        },
                         icon: Icon(Icons.delete),
                         splashRadius: 20,
                       ),
@@ -70,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => CardListWidget(listName: listName, cardList: cardListCollection[index].cardList)
+                          builder: (context) => CardListWidget(listName: cardListCollection[index].name, cardList: cardListCollection[index].cardList)
                       ),
                     );
                   },
@@ -84,7 +93,12 @@ class _HomePageState extends State<HomePage> {
                           return showDialog(
                             context: context,
                             builder: (context) {
-                              return RenameCardListWidget();
+                              return RenameCardListWidget(
+                                cardListEntity: cardListCollection[index],
+                                onChangedName: (newName) => setState(() {
+                                  cardListCollection[index].name = newName;
+                                })
+                              );
                             },
                           );
                         case 'delete':
@@ -101,14 +115,14 @@ class _HomePageState extends State<HomePage> {
                       PopupMenuItem(
                         child: Text('Delete'),
                         value: 'delete',
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );
-        }
+        },
       ),
     );
   }

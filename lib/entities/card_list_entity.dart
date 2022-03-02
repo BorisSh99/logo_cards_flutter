@@ -11,4 +11,6 @@ class CardListEntity {
     cardList.add(cardEntity);
   }
 
+
+
 }
