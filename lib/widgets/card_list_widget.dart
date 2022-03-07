@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../entities/card_entity.dart';
+import '../models/card_model.dart';
 
 class CardListWidget extends StatefulWidget {
   final String listName;
-  final List<CardEntity> cardList;
+  final List<CardModel> cardList;
 
   const CardListWidget({Key? key, required this.listName, required this.cardList}) : super(key: key);
 

@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:logophile_flutter/entities/card_list_entity.dart';
+import '../models/card_list_model.dart';
 
 class RenameCardListWidget extends StatelessWidget {
-  final CardListEntity cardListEntity;
-  final Function onChangedName;
-  const RenameCardListWidget({Key? key, required this.cardListEntity, required this.onChangedName}) : super(key: key);
+  final CardListModel cardListEntity;
+  final Function changeNameHandler;
+
+  const RenameCardListWidget(
+      {Key? key, required this.cardListEntity, required this.changeNameHandler})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _formKey = GlobalKey<FormState>();  //for validation
+    GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //for validation
+
     return AlertDialog(
       content: Form(
         key: _formKey,
@@ -16,7 +20,7 @@ class RenameCardListWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Rename card collection:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -26,7 +30,6 @@ class RenameCardListWidget extends StatelessWidget {
             SizedBox(height: 8),
             TextFormField(
               decoration: InputDecoration(labelText: 'New name'),
-              maxLength: 32,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Name is required';
@@ -35,7 +38,7 @@ class RenameCardListWidget extends StatelessWidget {
               },
               initialValue: cardListEntity.name,
               onSaved: (value) {
-                onChangedName(value);
+                changeNameHandler(value);
               },
             ),
             SizedBox(height: 8),

@@ -1,39 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:logophile_flutter/widgets/rename_card_list_widget.dart';
-import '../entities/card_entity.dart';
+import '../models/card_model.dart';
 import '../widgets/card_list_widget.dart';
-import '../entities/card_list_entity.dart';
+import '../models/card_list_model.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
 
-  List<CardListEntity> cardListCollection = [];
+  List<CardListModel> cardListCollection = [];
 
   @override
   void initState() {
     super.initState();
 
 
-    cardListCollection.add(CardListEntity('Mock list', [CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
-                                            CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
-                                            CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
+    cardListCollection.add(CardListModel('Mock list', [CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
+                                            CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
+                                            CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
     ]));
-    cardListCollection.add(CardListEntity('Mock list1', [CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
-      CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
-      CardEntity('John', 'Джон'), CardEntity('Mary', 'Мэри'), CardEntity('Arthur', 'Артур'),
+    cardListCollection.add(CardListModel('Mock list1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\ngfdgdf\ngdfgdf', [CardModel('John55555555555555555555555554', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
+      CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
+      CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
     ]));
-  }
-
-  void onChangedName(String newName) {
-    setState(() {
-
-    });
   }
 
   @override
@@ -83,10 +77,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   },
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: PopupMenuButton(
+                  trailing: PopupMenuButton(
                     onSelected: (value) async {
                       switch (value) {
                         case 'rename':
@@ -95,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) {
                               return RenameCardListWidget(
                                 cardListEntity: cardListCollection[index],
-                                onChangedName: (newName) => setState(() {
+                                changeNameHandler: (newName) => setState(() { //setState of current cardListName
                                   cardListCollection[index].name = newName;
                                 })
                               );
@@ -108,11 +99,11 @@ class _HomePageState extends State<HomePage> {
                       }
                     },
                     itemBuilder: (context) => [
-                      PopupMenuItem(  //onTap pops after executing!
+                      const PopupMenuItem(  //onTap pops after executing!
                         child: Text('Rename'),
                         value: 'rename',
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text('Delete'),
                         value: 'delete',
                       ),
