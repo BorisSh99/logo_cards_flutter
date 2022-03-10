@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import '../models/card_model.dart';
 
-class CardListWidget extends StatefulWidget {
+class CardCollectionView extends StatefulWidget {
   final String listName;
   final List<CardModel> cardList;
 
-  const CardListWidget({Key? key, required this.listName, required this.cardList}) : super(key: key);
+  const CardCollectionView({Key? key, required this.listName, required this.cardList}) : super(key: key);
 
   @override
-  State<CardListWidget> createState() => _CardListWidgetState();
+  State<CardCollectionView> createState() => _CardCollectionViewState();
 }
 
-class _CardListWidgetState extends State<CardListWidget> {
+class _CardCollectionViewState extends State<CardCollectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,11 +1,11 @@
 import '../models/card_model.dart';
 
-class CardListModel {
+class CardCollectionModel {
 
   String name;
   List<CardModel> cardList;
 
-  CardListModel(this.name, this.cardList);
+  CardCollectionModel(this.name, this.cardList);
 
   void addCard(CardModel cardEntity) {
     cardList.add(cardEntity);

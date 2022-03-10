@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../models/card_list_model.dart';
+import '../models/card_collection_model.dart';
 
 class RenameCardListWidget extends StatelessWidget {
-  final CardListModel cardListEntity;
+  final CardCollectionModel cardCollection;
   final Function changeNameHandler;
 
   const RenameCardListWidget(
-      {Key? key, required this.cardListEntity, required this.changeNameHandler})
+      {Key? key, required this.cardCollection, required this.changeNameHandler})
       : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class RenameCardListWidget extends StatelessWidget {
                 }
                 return null;
               },
-              initialValue: cardListEntity.name,
+              initialValue: cardCollection.name,
               onSaved: (value) {
                 changeNameHandler(value);
               },

@@ -6,7 +6,7 @@ void main() {
     theme: ThemeData.light(),
     initialRoute: '/',
     routes: {
-      '/': (context) => HomeScreen(),
+      '/': (context) => const HomeScreen(),
     },
   ));
 }
