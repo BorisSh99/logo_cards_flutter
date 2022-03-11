@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
                                             CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
     ]));
-    cardCollectionList.add(CardCollectionModel('Mock list1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\ngfdgdf\ngdfgdf', [CardModel('John55555555555555555555555554', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
+    cardCollectionList.add(CardCollectionModel('Mock list1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\ngfdgdf\ngdfgdf', [CardModel('John55555555555555555555555554\ndfsd', 'Джон\ndfsgsdf'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
       CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
       CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
     ]));
@@ -34,12 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Card-Lists'),
+        title: Text('My Card-Collections'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
       ),
       body: ListView.builder(
         itemCount: cardCollectionList.length,
         itemBuilder: (context, index) {
           return Card(
+            elevation: 4,
             child: InkWell(
               onTap: () {
                 Navigator.of(context).push(
@@ -52,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   ListTile(
                     title: Padding(
-                      padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 13.0),
+                      padding: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 8.0),
                       child: Text(cardCollectionList[index].name),
                     ),
                     subtitle: Row(

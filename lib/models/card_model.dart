@@ -1,9 +1,9 @@
 class CardModel {
 
-  String word;
+  String term;
   String definition;
   int confidence;
 
-  CardModel(this.word, this.definition, [this.confidence = 0]);
+  CardModel(this.term, this.definition, [this.confidence = 0]);
 
 }
