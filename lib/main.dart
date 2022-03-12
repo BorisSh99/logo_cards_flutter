@@ -3,8 +3,8 @@ import './screens/home_screen.dart';
 
 void main() {
   runApp(MaterialApp(
-    theme: ThemeData.dark(),
-    darkTheme: ThemeData.dark(),
+    theme: ThemeData.light(),
+    darkTheme: ThemeData.light(),
     initialRoute: '/',
     routes: {
       '/': (context) => const HomeScreen(),

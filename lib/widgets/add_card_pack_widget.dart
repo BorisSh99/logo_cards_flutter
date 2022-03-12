@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import '../models/card_collection_model.dart';
 
-class RenameCardListWidget extends StatelessWidget {
-  final CardCollectionModel cardCollection;
-  final Function changeNameHandler;
+import '../models/card_pack_model.dart';
 
-  const RenameCardListWidget(
-      {Key? key, required this.cardCollection, required this.changeNameHandler})
+class AddCardPackWidget extends StatelessWidget {
+  final List<CardPackModel> cardPackList;
+  final Function addCardPackHandler;
+
+  const AddCardPackWidget(
+      {Key? key, required this.cardPackList, required this.addCardPackHandler})
       : super(key: key);
 
   @override
@@ -21,7 +22,7 @@ class RenameCardListWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Rename card collection:',
+              'Add card collection:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -29,16 +30,15 @@ class RenameCardListWidget extends StatelessWidget {
             ),
             SizedBox(height: 8),
             TextFormField(
-              decoration: InputDecoration(labelText: 'New name'),
+              decoration: InputDecoration(labelText: 'Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Name is required';
                 }
                 return null;
               },
-              initialValue: cardCollection.name,
               onSaved: (value) {
-                changeNameHandler(value);
+                addCardPackHandler(value);
               },
             ),
             SizedBox(height: 8),

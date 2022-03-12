@@ -4,6 +4,6 @@ class CardModel {
   String definition;
   int confidence;
 
-  CardModel(this.term, this.definition, [this.confidence = 0]);
+  CardModel([this.term = '', this.definition = '', this.confidence = 0]);
 
 }
