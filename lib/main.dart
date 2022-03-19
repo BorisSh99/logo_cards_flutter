@@ -5,7 +5,7 @@ import './providers/card_packs_provider.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
-    create: (ctx) => CardPacksProvider(), //Singleton?
+    create: (_) => CardPacksProvider(), //Singleton?
     child: MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.light(),

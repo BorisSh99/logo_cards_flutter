@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:logophile_flutter/providers/card_packs_provider.dart';
+import 'package:provider/provider.dart';
 
-import '../models/card_pack_model.dart';
 
 class AddCardPackWidget extends StatelessWidget {
-  final List<CardPackModel> cardPackList;
-  final Function addCardPackHandler;
 
   const AddCardPackWidget(
-      {Key? key, required this.cardPackList, required this.addCardPackHandler})
+      {Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //for validation
+    final _addCardPackHandler = Provider.of<CardPacksProvider>(context, listen: false).addCardPack;
+    print('I\'m build() in AddCardPackWidget');
 
     return AlertDialog(
       content: Form(
@@ -38,7 +39,7 @@ class AddCardPackWidget extends StatelessWidget {
                 return null;
               },
               onSaved: (value) {
-                addCardPackHandler(value);
+                _addCardPackHandler(value!);
               },
             ),
             SizedBox(height: 8),

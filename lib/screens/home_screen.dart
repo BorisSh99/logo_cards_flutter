@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import '../providers/card_packs_provider.dart';
+import 'package:provider/provider.dart';
 import '../widgets/add_card_pack_widget.dart';
 import '../widgets/rename_card_pack_widget.dart';
 import '../models/card_model.dart';
@@ -32,17 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
     ]));
   }
 
-  void _addCardPack(String name) {
-    setState(() {
-      _cardPackList.add(CardPackModel(name, [] ));
-    });
-  }
-
   final duration = Duration(milliseconds: 300);
   bool _isFabVisible = true;
 
   @override
   Widget build(BuildContext context) {
+    final _cardPacksData = Provider.of<CardPacksProvider>(context);
+    final _cardPackList = _cardPacksData.cardPackList;
+    print('I\'m build() in HomeScreen');
     return Scaffold(
       appBar: AppBar(
         title: Text('My Card-Collections'),
@@ -58,10 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             showDialog(
               context: context,
               builder: (context) {
-                return AddCardPackWidget(
-                  cardPackList: _cardPackList,
-                  addCardPackHandler: _addCardPack,
-                );
+                return AddCardPackWidget();
               },
             );
           },
