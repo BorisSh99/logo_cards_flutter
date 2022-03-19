@@ -2,8 +2,9 @@ class CardModel {
 
   String term;
   String definition;
-  int confidence;
+  bool isRemembered;
+  bool isFavorite;
 
-  CardModel([this.term = '', this.definition = '', this.confidence = 0]);
+  CardModel(this.term, this.definition, [this.isRemembered = false, this.isFavorite = false]);
 
 }

@@ -19,8 +19,6 @@ class _AddCardWidgetState extends State<AddCardWidget> {
   final _term = TextEditingController();
   final _definition = TextEditingController();
 
-  final _newCard = CardModel();
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -42,32 +40,26 @@ class _AddCardWidgetState extends State<AddCardWidget> {
               controller: _term,
               decoration: InputDecoration(labelText: 'Term'),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Term is required';
-                }
-                return null;
+                return value == null || value.isEmpty ? 'Term is required' : null;
               },
-              onSaved: (newValue) => _newCard.term = newValue!,
+              // onSaved: (newValue) => _newCard.term = newValue!,
             ),
             SizedBox(height: 8),
             TextFormField(
               controller: _definition,
               decoration: InputDecoration(labelText: 'Definition'),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Definition is required';
-                }
-                return null;
+                return value == null || value.isEmpty ? 'Definition is required' : null;
               },
-              onSaved: (newValue) => _newCard.definition = newValue!,
+              // onSaved: (newValue) => _newCard.definition = newValue!,
             ),
             SizedBox(height: 8),
             ElevatedButton(
               child: Text('Submit'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  _formKey.currentState?.save();
-                  widget.addCardHandler(_newCard);
+                  // _formKey.currentState?.save();
+                  widget.addCardHandler(CardModel(_term.text, _definition.text));
                   Navigator.pop(context);
                 }
               },
