@@ -12,6 +12,8 @@ class AddCardPackWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //for validation
+
+    // Provider.of... instead of Consumer due to 'listen'-argument setter (So we can manage listener (not possible with Consumer?))
     final _addCardPackHandler = Provider.of<CardPacksProvider>(context, listen: false).addCardPack;
     print('I\'m build() in AddCardPackWidget');
 

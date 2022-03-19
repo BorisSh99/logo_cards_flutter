@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/card_pack_model.dart';
+import '../providers/card_packs_provider.dart';
 
 class RenameCardPackWidget extends StatelessWidget {
   final CardPackModel cardPack;
-  final Function changeNameHandler;
+  final int index;
 
   const RenameCardPackWidget(
-      {Key? key, required this.cardPack, required this.changeNameHandler})
+      {Key? key, required this.cardPack, required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> _formKey = GlobalKey<FormState>(); //for validation
+
+    // Provider.of... instead of Consumer due to 'listen'-argument setter (So we can manage listener (not possible with Consumer?))
+    final _changeNameHandler = Provider.of<CardPacksProvider>(context, listen: false).renameAtWith;
+    print('I\'m build() in RenameCardPackWidget');
 
     return AlertDialog(
       content: Form(
@@ -31,14 +37,11 @@ class RenameCardPackWidget extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(labelText: 'New name'),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Name is required';
-                }
-                return null;
+                return value == null || value.isEmpty ? 'Name is required' : null;
               },
               initialValue: cardPack.name,
-              onSaved: (value) {
-                changeNameHandler(value);
+              onSaved: (newName) {
+                _changeNameHandler(index, newName!);
               },
             ),
             SizedBox(height: 8),

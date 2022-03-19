@@ -4,9 +4,7 @@ import '../providers/card_packs_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/add_card_pack_widget.dart';
 import '../widgets/rename_card_pack_widget.dart';
-import '../models/card_model.dart';
 import '../widgets/card_pack_view.dart';
-import '../models/card_pack_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,23 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  List<CardPackModel> _cardPackList = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-
-    _cardPackList.add(CardPackModel('Mock list', [CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-                                            CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-                                            CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-    ]));
-    _cardPackList.add(CardPackModel('Mock list1zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\ngfdgdf\ngdfgdf', [CardModel('John55555555555555555555555554\ndfsd', 'Джон\ndfsgsdf'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-      CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-      CardModel('John', 'Джон'), CardModel('Mary', 'Мэри'), CardModel('Arthur', 'Артур'),
-    ]));
-  }
 
   final duration = Duration(milliseconds: 300);
   bool _isFabVisible = true;
@@ -134,16 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (context) {
                                           return RenameCardPackWidget(
                                             cardPack: _cardPackList[index],
-                                            changeNameHandler: (newName) => setState(() { //setState of current cardListName
-                                              _cardPackList[index].name = newName;
-                                            })
+                                            index: index, //performant?
                                           );
                                         },
                                       );
                                     case 'delete':
-                                      setState(() {
-                                        _cardPackList.removeAt(index);
-                                      });
+                                      _cardPacksData.deleteAt(index);
                                   }
                                 },
                                 itemBuilder: (context) => [

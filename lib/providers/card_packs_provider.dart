@@ -24,5 +24,15 @@ class CardPacksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteAt(int index) {
+    _cardPackList.removeAt(index);
+    notifyListeners();
+  }
+
+  void renameAtWith (int index, String newName) {
+    _cardPackList[index].name = newName;
+    notifyListeners();
+  }
+
 
 }
