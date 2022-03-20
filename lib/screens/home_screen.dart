@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:logophile_flutter/providers/animation_fab_provider.dart';
 import '../providers/card_packs_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/add_card_pack_widget.dart';
@@ -15,9 +16,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final duration = Duration(milliseconds: 300);
-  bool _isFabVisible = true;
-
   @override
   Widget build(BuildContext context) {
     final _cardPacksData = Provider.of<CardPacksProvider>(context);
@@ -28,35 +26,47 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('My Card-Collections'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: AnimatedSlide(
-        duration: duration,
-        offset: _isFabVisible ? Offset.zero : Offset(0, 2),
-        child: FloatingActionButton.extended(
-          label: Text('ADD NEW PACK'),
-          icon: Icon(Icons.add),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AddCardPackWidget();
+      floatingActionButton: Consumer<AnimationFabProvider>(
+        builder: (_context, provider, _child) {
+          print('I\'m Consumer<AnimationFabProvider> in HomeScreen (FAB)');
+          return AnimatedSlide(
+            duration: AnimationFabProvider.duration,
+            offset: provider.isFabVisible ? Offset.zero : Offset(0, 2),
+            child: FloatingActionButton.extended(
+              label: Text('ADD NEW PACK'),
+              icon: Icon(Icons.add),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AddCardPackWidget();
+                  },
+                );
               },
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
-      body: NotificationListener<UserScrollNotification>(
-        onNotification: (notification) {
-          final ScrollDirection direction = notification.direction;
-          if (direction == ScrollDirection.forward) {
-            if (!_isFabVisible) setState(() => _isFabVisible = true); //performance
-          } else if (direction == ScrollDirection.reverse) {
-            if (_isFabVisible) setState(() => _isFabVisible = false);
-          }
-          return true;
+      body: Consumer<AnimationFabProvider>(
+        builder: (_context, ref, child) {
+          print('I\'m Consumer<AnimationFabProvider> in HomeScreen (NotificationListener)');
+          return NotificationListener<UserScrollNotification>(
+            onNotification: (notification) {
+              final ScrollDirection direction = notification.direction;
+              if (direction == ScrollDirection.forward) {
+                if (!ref.isFabVisible) ref.swapIsFabVisible(); //performance
+              } else if (direction == ScrollDirection.reverse) {
+                if (ref.isFabVisible) ref.swapIsFabVisible();
+              }
+              return true;
+            },
+            child: child!,
+          );
         },
         child: ListView.builder(
           itemCount: _cardPackList.length,
           itemBuilder: (context, index) {
+            print('I\'m $index');
             return Padding(
               padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
               child: Material(
