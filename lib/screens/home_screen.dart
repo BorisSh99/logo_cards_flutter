@@ -1,6 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:logophile_flutter/providers/animation_fab_provider.dart';
+import 'package:logophile_flutter/providers/animation_fab_pack_provider.dart';
 import '../providers/card_packs_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/add_card_pack_widget.dart';
@@ -18,140 +20,144 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _cardPacksData = Provider.of<CardPacksProvider>(context);
-    final _cardPackList = _cardPacksData.cardPackList;
     print('I\'m build() in HomeScreen');
     return Scaffold(
       appBar: AppBar(
         title: Text('My Card-Collections'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Consumer<AnimationFabProvider>(
-        builder: (_context, provider, _child) {
+      floatingActionButton: Consumer<AnimationFabPackProvider>(
+        builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in HomeScreen (FAB)');
           return AnimatedSlide(
-            duration: AnimationFabProvider.duration,
-            offset: provider.isFabVisible ? Offset.zero : Offset(0, 2),
-            child: FloatingActionButton.extended(
-              label: Text('ADD NEW PACK'),
-              icon: Icon(Icons.add),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AddCardPackWidget();
-                  },
-                );
-              },
-            ),
+            duration: AnimationFabPackProvider.duration,
+            offset: animFab.isFabVisible ? Offset.zero : Offset(0, 2),
+            child: child!,
           );
         },
+        child: FloatingActionButton.extended(
+          label: Text('ADD NEW PACK'),
+          icon: Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AddCardPackWidget();
+              },
+            );
+          },
+        ),
       ),
-      body: Consumer<AnimationFabProvider>(
-        builder: (_context, ref, child) {
+      body: Consumer<AnimationFabPackProvider>(
+        builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in HomeScreen (NotificationListener)');
           return NotificationListener<UserScrollNotification>(
             onNotification: (notification) {
               final ScrollDirection direction = notification.direction;
               if (direction == ScrollDirection.forward) {
-                if (!ref.isFabVisible) ref.swapIsFabVisible(); //performance
+                if (!animFab.isFabVisible) animFab.swapIsFabVisible(); //performance
               } else if (direction == ScrollDirection.reverse) {
-                if (ref.isFabVisible) ref.swapIsFabVisible();
+                if (animFab.isFabVisible) animFab.swapIsFabVisible();
               }
               return true;
             },
             child: child!,
           );
         },
-        child: ListView.builder(
-          itemCount: _cardPackList.length,
-          itemBuilder: (context, index) {
-            print('I\'m $index');
-            return Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
-              child: Material(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(12),
-                elevation: 6.0,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => CardPackView(listName: _cardPackList[index].name, cardList: _cardPackList[index].cardList)
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 6),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _cardPackList[index].name,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+        child: Consumer<CardPacksProvider>(
+          builder: (_context, cardPacksData, _child) {
+            UnmodifiableListView getCardPackList = cardPacksData.cardPackList;
+            return ListView.builder(
+              itemCount: getCardPackList.length,
+              itemBuilder: (context, index) {
+                print('I\'m $index');
+                return Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
+                  child: Material(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(12),
+                    elevation: 6.0,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => CardPackView(listName: getCardPackList[index].name, cardList: getCardPackList[index].cardList)
                           ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
-                          child: Text(
-                            'MOCK',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                          EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              OutlinedButton(
-                                  onPressed: () {},
-                                  child: Text('BUTTON'),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(16, 12, 16, 6),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              getCardPackList[index].name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              PopupMenuButton(
-                                onSelected: (value) async {
-                                  switch (value) {
-                                    case 'rename':
-                                      return showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return RenameCardPackWidget(
-                                            cardPack: _cardPackList[index],
-                                            index: index, //performant?
-                                          );
-                                        },
-                                      );
-                                    case 'delete':
-                                      _cardPacksData.deleteAt(index);
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(  //onTap pops after executing!
-                                    child: Text('Rename'),
-                                    value: 'rename',
+                            ),
+                            Padding(
+                              padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                              child: Text(
+                                'MOCK',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                              EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  OutlinedButton(
+                                      onPressed: () {},
+                                      child: Text('BUTTON'),
                                   ),
-                                  const PopupMenuItem(
-                                    child: Text('Delete'),
-                                    value: 'delete',
+                                  PopupMenuButton(
+                                    onSelected: (value) async {
+                                      switch (value) {
+                                        case 'rename':
+                                          return showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return RenameCardPackWidget(
+                                                cardPack: getCardPackList[index],
+                                                index: index, //performant?
+                                              );
+                                            },
+                                          );
+                                        case 'delete':
+                                          cardPacksData.deleteAt(index);
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem(  //onTap pops after executing!
+                                        child: Text('Rename'),
+                                        value: 'rename',
+                                      ),
+                                      const PopupMenuItem(
+                                        child: Text('Delete'),
+                                        value: 'delete',
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         ),

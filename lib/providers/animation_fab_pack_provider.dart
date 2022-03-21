@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AnimationFabProvider extends ChangeNotifier {
+class AnimationFabPackProvider extends ChangeNotifier {
 
   static const Duration duration = Duration(milliseconds: 300);
 
