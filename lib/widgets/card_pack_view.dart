@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/card_model.dart';
-import '../providers/animation_fab_card_provider.dart';
+import '../providers/animation_fab_provider.dart';
 import './add_card_widget.dart';
 
 class CardPackView extends StatefulWidget {
@@ -30,11 +30,11 @@ class _CardPackViewState extends State<CardPackView> {
       appBar: AppBar(
         title: Text(widget.listName),
       ),
-      floatingActionButton: Consumer<AnimationFabCardProvider>(
+      floatingActionButton: Consumer<AnimationFabProvider>(
         builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in CardPackView (FAB)');
           return AnimatedSlide(
-            duration: AnimationFabCardProvider.duration,
+            duration: AnimationFabProvider.duration,
             offset: animFab.isFabVisible ? Offset.zero : Offset(0, 2),
             child: child!,
           );
@@ -55,7 +55,7 @@ class _CardPackViewState extends State<CardPackView> {
           },
         ),
       ),
-      body: Consumer<AnimationFabCardProvider>(
+      body: Consumer<AnimationFabProvider>(
         builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in CardPackView (NotificationListener)');
           return NotificationListener<UserScrollNotification>(
@@ -75,6 +75,7 @@ class _CardPackViewState extends State<CardPackView> {
             crossAxisCount: 2,
             itemCount: widget.cardList.length,
             itemBuilder: (context, index) {
+              print('blah');
               return Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(4, 4, 4, 4),
                 child: Material(

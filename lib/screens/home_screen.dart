@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:logophile_flutter/providers/animation_fab_pack_provider.dart';
+import 'package:logophile_flutter/providers/animation_fab_provider.dart';
 import '../providers/card_packs_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/add_card_pack_widget.dart';
@@ -26,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('My Card-Collections'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Consumer<AnimationFabPackProvider>(
+      floatingActionButton: Consumer<AnimationFabProvider>(
         builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in HomeScreen (FAB)');
           return AnimatedSlide(
-            duration: AnimationFabPackProvider.duration,
+            duration: AnimationFabProvider.duration,
             offset: animFab.isFabVisible ? Offset.zero : Offset(0, 2),
             child: child!,
           );
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ),
-      body: Consumer<AnimationFabPackProvider>(
+      body: Consumer<AnimationFabProvider>(
         builder: (_context, animFab, child) {
           print('I\'m Consumer<AnimationFabProvider> in HomeScreen (NotificationListener)');
           return NotificationListener<UserScrollNotification>(
@@ -79,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     elevation: 6.0,
                     child: InkWell(
                       onTap: () {
+                        final _animFab = Provider.of<AnimationFabProvider>(context, listen: false);
+                        _animFab.setVisible();
                         Navigator.of(context).push(
                           MaterialPageRoute(
                               builder: (context) => CardPackView(listName: getCardPackList[index].name, cardList: getCardPackList[index].cardList)

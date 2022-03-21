@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AnimationFabPackProvider extends ChangeNotifier {
+class AnimationFabProvider extends ChangeNotifier {
 
   static const Duration duration = Duration(milliseconds: 300);
 
@@ -13,5 +13,9 @@ class AnimationFabPackProvider extends ChangeNotifier {
   void swapIsFabVisible() {
     _isFabVisible = !_isFabVisible;
     notifyListeners();
+  }
+
+  void setVisible() {
+    _isFabVisible = true;
   }
 }
